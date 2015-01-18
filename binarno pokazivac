@@ -1,0 +1,76 @@
+using namespace std;
+
+struct bstablo{
+	int oznaka;
+	bstablo *lc,*rc;
+};
+
+void initB(int x,bstablo *stablo){
+    stablo->lc =NULL;
+    stablo->rc = NULL;
+    stablo->oznaka = x;
+    }
+bstablo * parentB(bstablo *n, bstablo *stablo){
+        bstablo *parentL=NULL;
+        bstablo *parentR=NULL;
+        if (stablo->lc == n || stablo->rc == n) 
+           return stablo;
+        if (stablo->lc)  
+           parentL = parentB(n, stablo->lc);
+        if (stablo->rc) 
+           parentR = parentB(n, stablo->rc);
+        if(parentL) 
+                    return parentL;
+        if(parentR) 
+                    return parentR;
+        return NULL;   		     
+}
+
+bstablo * leftchildB(bstablo * n,bstablo * stablo){
+return n->lc;
+}
+bstablo * rightchildB(bstablo * n,bstablo * stablo){
+return n->rc;	
+}
+int labelB(bstablo * n, bstablo * stablo){
+	return n->oznaka;
+}
+void changelabelB(int x, bstablo * n,bstablo * stablo){
+	n->oznaka=x;
+}
+bstablo * rootB(bstablo * stablo){
+	return stablo;
+}
+void createleftB(int x,bstablo * n,bstablo * stablo){
+	if(n->lc)
+		cout<<"cvor je zauzet!"<<endl;	
+	else{
+	bstablo * novi=new bstablo;
+	n->lc=novi;
+	novi->lc=NULL;
+	novi->rc=NULL;
+	novi->oznaka=x;
+	}
+}
+void createrightB(int x,bstablo * n,bstablo * stablo){
+	if(n->rc)
+		cout<<"cvor je zauzet!"<<endl;	
+	else{
+	bstablo *novi=new bstablo;
+	n->rc=novi;
+	novi->lc=NULL;
+	novi->rc=NULL;
+	novi->oznaka=x;
+	}
+}
+void deleteB (bstablo * n,bstablo * stablo) {
+      if (n->lc)
+         deleteB(n->lc, stablo);
+      if (n->rc)
+         deleteB(n->rc, stablo);
+      if (n != rootB(stablo) && leftchildB(parentB(n, stablo),stablo)==n)
+         parentB(n, stablo)->lc = NULL;
+      else if (n != rootB(stablo))
+           parentB(n, stablo)->rc = NULL;
+      delete n;    
+}
