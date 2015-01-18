@@ -1,0 +1,187 @@
+#include<iostream>
+#include"opcenito_stablo.h"
+#include<windows.h>
+#include"algoritmi_ophodenja.h"
+#include"binarno_stablo_pokazivac.h"
+//#include"binarno_stablo_polje.h"
+#include"pretrazivanje.h"
+#include"heap_sort.h"
+using namespace std;
+void opcenito(){
+     stablo *T= new stablo;
+     system("cls");
+     cout<<"Inicijalizacija stabla s korijenom koji ima vrijednost 1"<<endl<<endl;
+     initT(0,T);
+     cout<<"Korjen dobiva djecu s indeksima (1, 2, 3)"<<endl<<endl;
+     createT(1,0,T);
+     createT(2,0,T);
+     createT(3,0,T);
+     cout<<"Prvo dijete korijena ima vrijednost: "<<labelT(firstchildT(0,T),T)<<" a indeks mu je: ";
+     cout<<firstchildT(0,T)<<endl<<endl;
+     cout<<"Prvi brat te vrijednosti ima indeks: "<<nextsiblingT(1,T);
+     cout<<" a vrijednost mu je: "<<labelT(nextsiblingT(1,T),T)<<endl<<endl;
+     cout<<"Roditelj od cvora s indeksom 3 je: "<<parentT(3,T);
+     cout<<" a vrijednost mu je: "<<labelT(parentT(3,T),T)<<endl<<endl;
+     cout<<"Indeks korijena je: "<<rootT(T)<<endl<<endl;
+     cout<<"Mijenjanje vrijednosti cvora s indeksom 1 na 8"<<endl;
+     changelabelT(8,1,T);
+     cout<<"Vrijednost cvora s indeksom 1 sada iznosi: "<<labelT(1,T)<<endl<<endl;
+     cout<<"Brisem stablo"<<endl;
+     deleteT(0,T);
+     cout<<"Vrijednost korijena sada iznosi: "<<labelT(0,T)<<endl<<endl;
+     system("pause");
+     system("cls");
+}
+void ophodnja(){
+    system("cls"); 
+    stablo *T=new stablo;
+	int x;
+	cout<<"Inicijalizirano je stablo s korijenom na indeksu 0 i vrijednosti 1"<<endl<<endl;
+	initT(0,T);
+	cout<<"Dodani su potomci korijenu s indeksima (1, 2, 3)"<<endl<<endl;
+	createT(1,0,T);createT(2,0,T);createT(3,0,T);
+	cout<<"Dodani su potomci prvom dijetetu (5, 45)"<<endl;
+    cout<<"Dodani su potomci drugom dijetetu (13, 7)"<<endl;
+    cout<<"Dodani su potomci trecem dijetetu (28, 19)"<<endl;
+	createT(5,1,T); 
+    createT(45,1,T); 
+	createT(13,2,T); 
+    createT(7,2,T);
+    createT(28,3,T); 
+    createT(19,3,T); 
+	cout<<"Koje ophodenje zelite?: "<<endl;
+	cout<<"(1 Preorder)  (2 Inorder)  (3 Postorder)"<<endl;
+	cin>>x;
+	switch(x){
+		case 1:
+		Preorder(rootT(T),T);
+		cout<<endl;
+		break;
+		case 2:
+		Inorder(rootT(T),T);
+		cout<<endl;
+		break;
+		case 3:
+		Postorder(rootT(T),T);
+		cout<<endl;
+		break;
+	}
+    delete T;
+    system("pause");
+    system("cls");
+}
+void binarno(){
+    system("cls");
+    int izbor;
+    bstablo *stablo=new bstablo;
+	int x;
+	cout<<"Unesite oznaku korijena: ";
+	cin>>x;
+	initB(x,stablo);
+	cout<<"Adresa korijena je:"<<rootB(stablo)<<endl;
+	cout<<"oznaka korijena je:"<<labelB(rootB(stablo),stablo)<<endl;
+	bstablo * korijen=rootB(stablo);
+	cout<<"Korijenu je dodan lijevi i desni cvor, vrijednosti 5 i 35"<<endl<<endl;
+	createleftB(5,korijen,stablo);
+	bstablo * ld1=leftchildB(korijen,stablo);
+	createrightB(35,korijen,stablo);
+	bstablo * rd1=rightchildB(korijen,stablo);
+	cout<<"Lijevom dijetetu korijena dodan je lijevi i desni cvor 23 i 11"<<endl<<endl;
+	createleftB(23,ld1,stablo);
+	bstablo * ld2=leftchildB(ld1,stablo);
+	createrightB(11,ld1,stablo);
+	bstablo * rd2=rightchildB(ld1,stablo);
+	cout<<"Desnom dijetetu korijena dodan je lijevi cvor 23"<<endl<<endl;
+	createleftB(23,rd1,stablo);
+	bstablo * rd3=rightchildB(rd1,stablo);
+	cout<<"cvoru s vrijednosti 5 dodan je desni cvor 53"<<endl<<endl;
+	createrightB(53,ld2,stablo);
+	bstablo * ld3=leftchildB(ld2,stablo);
+	cout<<"cvoru s oznakom 6 dodan je lijevi cvor 9"<<endl<<endl;
+	createleftB(9,rd2,stablo);
+	bstablo * rd4=rightchildB(rd2,stablo);
+	cout<<"Vrijednost desnog dijeteta korijena je:"<<labelB(rightchildB(rootB(stablo),stablo),stablo)<<endl<<endl;
+	cout<<"Unesite novu vrijednost korijena: ";
+	int oznaka;
+	cin>>oznaka;
+	changelabelB(oznaka,rootB(stablo),stablo);
+	cout<<"Adresa roditelja cvora s oznakom 23 je:"<<parentB(ld2,stablo)<<endl<<endl;
+	cout<<"Vrijednost roditelja cvora s oznakom 11 je:"<<labelB(parentB(ld2,stablo),stablo)<<endl;
+	cout<<"Provjeravam da li cvor 1 ima lijevo dijete: "<<leftchildB(rootB(stablo),stablo)<<endl;
+	cout<<"Provjeravam da li cvor 2 ima desno dijete: "<<rightchildB(leftchildB(rootB(stablo),stablo),stablo)<<endl;
+	cout<<"Provjeravam da li cvor 3 ima lijevo dijete: "<<leftchildB(rightchildB(rootB(stablo),stablo),stablo)<<endl;
+	cout<<"Provjeravam da li cvor 3 ima desno dijete: "<<rightchildB(rightchildB(rootB(stablo),stablo),stablo)<<endl;
+	cout<<"Obrisano je stablo"<<endl<<endl;
+	deleteB(leftchildB(korijen,stablo),stablo);
+	system("pause");
+	system("cls");
+}
+void pretrazivanje(){
+     system("cls");
+     telement *S= new telement;
+     S->lijevo = NULL;
+	 S->desno = NULL;
+     dodaj_element_u_stablo(S,1);
+     dodaj_element_u_stablo(S,5);
+     dodaj_element_u_stablo(S,8);
+     dodaj_element_u_stablo(S,4);
+     dodaj_element_u_stablo(S,3);
+     dodaj_element_u_stablo(S,15);
+     sort_uzlazno(S);
+     cout<<endl<<endl;
+     cout<<"Unesite broj koji zelite pronaci: ";
+     int broj;
+     cin>>broj;
+     cout<<endl;
+     telement *adresa=trazi(S,broj);
+     if(adresa==NULL)
+                     cout<<"Broj se ne nalazi u stablu"<<endl<<endl;
+     else
+         cout<<adresa->broj<<" je pronaden u stablu"<<endl<<endl;
+     delete S;
+     system("pause");
+     system("cls");
+}
+void heap(){
+     system("cls");
+     int polje[5];
+     for(int i=0;i<5;i++){
+             cout<<"Unesite "<<i+1<<" clan polja: ";
+             cin>>polje[i];
+     }
+     cout<<endl<<endl<<"Izgled polja"<<endl;
+     for(int i=0;i<5;i++){
+             cout<<polje[i]<<" ";
+     }
+     HeapSort(polje,5);
+     cout<<endl<<endl<<"Izgled polja nakon sortiranja"<<endl;
+     for(int i=0;i<5;i++){
+             cout<<polje[i]<<" ";
+     }
+     cout<<endl<<endl;
+     system("pause");
+     system("cls");
+}
+int main(){
+    int x;
+    do{
+       cout<<"Unesite 1 za rad s opcenitim stablom"<<endl;
+       cout<<"Unesite 2 za algoritme ophodenja"<<endl;
+       cout<<"Unesite 3 za implementaciju binarnog stabla"<<endl;
+       cout<<"Unesite 4 za pretrazivanje binarnog stabla"<<endl;
+       cout<<"Unesite 5 za heap sort"<<endl;
+       cin>>x;
+       switch(x){
+                 case 1: opcenito();
+                 break;
+                 case 2: ophodnja();
+                 break;
+                 case 3: binarno();
+                 break;
+                 case 4: pretrazivanje();
+                 break;
+                 case 5: heap();
+                 break;
+       }
+    }while(x!=9);
+}
