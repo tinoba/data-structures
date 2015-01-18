@@ -1,0 +1,36 @@
+#include<iostream>
+using namespace std;
+stablo *T=new stablo;
+void Preorder(int trenutni, stablo *T){
+   	cout<<trenutni<<" "; 
+	if(firstchildT(trenutni,T) !=-1) 
+		Preorder(firstchildT(trenutni,T),T);
+	if(nextsiblingT(trenutni,T) !=-1) 
+				Preorder(nextsiblingT(trenutni,T),T);
+}
+void Inorder(int trenutni,stablo *T){
+    if(firstchildT(trenutni,T)!=-1)  
+    	Inorder(firstchildT(trenutni,T),T);
+    cout<<trenutni<<" "; 
+    if(firstchildT(trenutni,T)!=-1){ 
+    	trenutni=firstchildT(trenutni,T);
+    	while(nextsiblingT(trenutni,T)!=-1){
+    		trenutni=nextsiblingT(trenutni,T);
+    		Inorder(trenutni,T);
+    	}
+    }
+}
+
+void Postorder(int trenutni,stablo *T){
+	if(firstchildT(trenutni,T)!=-1)  
+    	Postorder(firstchildT(trenutni,T),T);
+     int trenutni2=trenutni; 
+     if(firstchildT(trenutni2,T)!=-1){   
+    	trenutni2=firstchildT(trenutni2,T);
+    	while(nextsiblingT(trenutni2,T)!=-1){
+    		trenutni2=nextsiblingT(trenutni2,T);
+    		Postorder(trenutni2,T);
+    	}
+    }
+    cout<<trenutni<<" ";
+}
