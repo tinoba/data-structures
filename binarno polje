@@ -1,0 +1,60 @@
+#include<iostream>
+using namespace std;
+
+struct elementi{
+	int oznaka;
+	bool iskoristen;
+};
+struct bstablo{
+	elementi polje[1000];
+};
+
+void initB(int x, bstablo * stablo){
+ 	for(int i=0;i<1000;i++) stablo->polje[i].iskoristen = false;
+    stablo->polje[1].oznaka = x;
+    stablo->polje[1].iskoristen = true;
+}
+
+int parentB(int n, bstablo * stablo){
+	if(n==1) return -1;
+	return n/2;
+}
+int leftchildB(int n,bstablo * stablo){
+	if(!stablo->polje[2*n].iskoristen) return -1;
+	else return 2*n;
+}
+int rightchildB(int n,bstablo * stablo){
+	if(!stablo->polje[2*n+1].iskoristen) return -1;
+	else return 2*n+1;
+}
+int labelB(int n, bstablo * stablo){
+	return stablo->polje[n].oznaka;
+}
+void changelabelB(int x, int n,bstablo * stablo){
+	stablo->polje[n].oznaka=x;
+}
+int rootB(bstablo * stablo){
+	return 1;
+}
+void createleftB(int x,int n,bstablo * stablo){
+	if(!stablo->polje[2*n].iskoristen&&stablo->polje[n].iskoristen){
+		stablo->polje[2*n].oznaka=x;
+		stablo->polje[2*n].iskoristen=true;
+	}
+	else cout<<"Ili taj cvor ne postoji ili je njegovo lijevo dijete već postoji!"<<endl;
+}
+void createrightB(int x,int n,bstablo * stablo){
+	if(!stablo->polje[2*n+1].iskoristen&&stablo->polje[n].iskoristen){
+		stablo->polje[2*n+1].oznaka=x;
+		stablo->polje[2*n+1].iskoristen=true;
+	}
+	else cout<<"Ili taj cvor ne postoji ili je njegovo desno dijete već postoji!"<<endl;
+}
+void deleteB(int n, bstablo * stablo){
+	if(leftchildB(n,stablo)!=-1)
+		deleteB(leftchildB(n,stablo),stablo);	
+	if(rightchildB(n,stablo)!=-1)
+		deleteB(rightchildB(n,stablo),stablo);
+	stablo->polje[n].iskoristen=false;	
+}
+
