@@ -1,0 +1,70 @@
+#include<iostream>
+using namespace std;
+
+struct element{
+	int oznaka,dijete,brat;
+};
+struct stablo{
+	element polje[1000];
+	int korijen;
+};
+
+void initT(int x, stablo *T){
+	for(int i=0;i<1000;i++){
+		T->polje[i].oznaka=0;
+		T->polje[i].dijete=-1;
+		T->polje[i].brat=-1;
+	}
+	T->polje[x].oznaka=1;
+	T->korijen=x;
+}
+int parentT(int n,stablo *T){
+	if(n==T->korijen) {
+		cout<<"Korijen nema roditelja!"<<endl;
+		return -1;
+	}
+	for(int i=0;i<1000;i++){
+		if(T->polje[i].dijete==n) return i;
+		if(T->polje[i].brat==n) return parentT(i,T); 
+	}
+
+}
+int firstchildT(int n,stablo *T){
+	return T->polje[n].dijete;
+}
+int nextsiblingT(int n,stablo *T){
+	return T->polje[n].brat;
+}
+int labelT(int n, stablo *T){
+	return T->polje[n].oznaka;
+}
+int rootT(stablo *T){
+	return T->korijen;
+}
+void createT(int x,int n,stablo *T){
+	if(!T->polje[n].oznaka){
+		cout<<"TAJ CVOR NE POSTOJI!!"<<endl;
+		return;
+	}
+	if(T->polje[n].dijete==-1) {
+		T->polje[n].dijete=x;
+	}
+	else{ 
+			n=T->polje[n].dijete; 	
+			while(T->polje[n].brat!=-1) n=T->polje[n].brat;
+			T->polje[n].brat=x;			
+	} 
+	T->polje[x].brat=-1;
+	T->polje[x].dijete=-1;
+	T->polje[x].oznaka=x*5;
+}
+void changelabelT(int x,int n, stablo *T){
+	T->polje[n].oznaka=x;
+}
+void deleteT(int n,stablo *T){
+	if(firstchildT(n,T)!=-1) deleteT(T->polje[n].dijete,T); 
+	if(nextsiblingT(n,T)!=-1) deleteT(T->polje[n].brat,T);
+	T->polje[n].brat=-1;
+	T->polje[n].dijete=-1;
+	changelabelT(0,n,T);	
+}
