@@ -1,0 +1,57 @@
+using namespace std;
+
+struct telement{
+	int broj;
+	telement *lijevo,*desno;
+};
+
+void dodaj_element_u_stablo(telement *stablo, int broj){
+  telement *zadnji,*novi;
+  int dalje=1;
+	zadnji=stablo;
+	do{
+		if (broj>zadnji->broj){
+			if (zadnji->desno!=NULL){zadnji=zadnji->desno;} //prijelaz na desni podčvor
+		else{ // dodavanje desnog podčvora
+			novi=new telement;
+			zadnji->desno=novi;
+			novi->broj=broj;
+			novi->lijevo=NULL;
+			novi->desno=NULL;
+			dalje=0;
+			}//if
+		}//if
+		else{//broj<=zadnji->broj
+			if (zadnji->lijevo!=NULL){zadnji=zadnji->lijevo;} //prijelaz na lijevi podčvor
+		else{ // dodavanje lijevog podčvora
+			novi=new telement;
+			zadnji->lijevo=novi;
+			novi->broj=broj;
+			novi->lijevo=NULL;
+			novi->desno=NULL;
+			dalje=0;
+			}//if
+		}
+	}while (dalje==1);
+};
+
+void sort_uzlazno(telement *stablo){
+  static telement *korijen=stablo;
+	if (stablo==NULL) return;// sidro rekurzije - omogućuje izlaz
+		sort_uzlazno (stablo->lijevo);
+	if (stablo!=korijen) cout<<stablo->broj<<", ";
+		sort_uzlazno (stablo->desno);
+};//sort_uzlazno
+
+telement *trazi(telement *stablo, int broj){//vraća adresu čvora ili NULL
+  telement *trenutni=stablo;
+  while (trenutni){
+    if ((trenutni->broj==broj)&&(trenutni!=stablo))break;
+    if (broj>trenutni->broj)
+      trenutni=trenutni->desno;
+    else
+      trenutni=trenutni->lijevo;
+  };//while
+  return trenutni;
+};// trazi
+
